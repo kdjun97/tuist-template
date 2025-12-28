@@ -1,6 +1,7 @@
 # Tuist Boilerplate Template
 
 - Tuist 기반 iOS 프로젝트를 빠르게 시작하기 위한 템플릿
+- 개발 생산성 향상을 목적으로 제작
 
 ### 목적
 
@@ -23,12 +24,11 @@ App
 └─ DesignSystem
 ```  
 
-### 모듈 생성 가이드
+## 모듈 생성 가이드
 
 본 프로젝트는 모듈 생성을 자동화하기 위해 Shell Script + Makefile 기반 명령어 제공  
 
-**Common / Presentation 모듈 생성**  
-> $ make module  
+### Common / Presentation 모듈 생성
 
 1. 생성할 모듈 타입 선택
   - CommonModule
@@ -36,15 +36,25 @@ App
 2. 모듈 이름 입력
 3. 입력 값을 기준으로 모듈 자동 생성
 
+```  
+$ make module
+1) FeatureModule
+2) CommonModule
+> 2
+
+생성할 모듈 이름을 입력하세요 :
+> Data
+```  
+
 ![make_module](./make_module.png)  
 
-**생성 결과**  
+### 생성 결과
 
 - 디렉토리 구조 생성
 - 기본 Project.swift 포함
 - Tuist가 인식 가능한 상태로 구성
 
-**주의 사항**   
+### 주의 사항
 
 - ModuleType 추가 필요
 - Module+Extension name case 추가 필요
