@@ -30,20 +30,19 @@ App
 **Common / Presentation 모듈 생성**  
 > $ make module  
 
-이후 실행 흐름  
-
 1. 생성할 모듈 타입 선택
   - CommonModule
   - (Presentation/Feature)Module
 2. 모듈 이름 입력
 3. 입력 값을 기준으로 모듈 자동 생성
 
-생성 결과  
+![make_module](./make_module.png)  
+
+**생성 결과**  
+
 - 디렉토리 구조 생성
 - 기본 Project.swift 포함
 - Tuist가 인식 가능한 상태로 구성
-
-![make_module](./make_module.png)  
 
 **주의 사항**   
 
