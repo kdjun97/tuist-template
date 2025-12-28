@@ -23,7 +23,7 @@ import PackageDescription
 let package = Package(
     name: "TuistTemplate",
     dependencies: [
-        // TODO: Dependency
+        .package(url: "https://github.com/Swinject/Swinject.git", from: "2.9.1")
     ]
 )
 

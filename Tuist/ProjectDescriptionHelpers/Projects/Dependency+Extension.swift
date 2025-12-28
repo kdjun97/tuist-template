@@ -17,18 +17,18 @@ public extension Array where Element == TargetDependency {
         
         return modules.map { module in
             switch module {
-            case .App, .Domain, .DesignSystem:
+            case .App, .Domain, .DesignSystem, .DI, .Data:
                 return .project(
                     target: module.name,
                     path: .relativeToRoot("Projects/\(module.name)")
                 )
-
             case .Features(let feature):
                 return .project(
                     target: feature.rawValue,
                     path: .relativeToRoot("Projects/Features/\(feature.rawValue)")
                 )
-            // TODO: Exteranl
+            case .External(let externalModule):
+                return .external(name: externalModule.rawValue)
             }
         }
     }

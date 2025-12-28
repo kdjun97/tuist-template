@@ -10,10 +10,13 @@ public enum ModuleType: Hashable {
     case Domain
     case Features(FeatureModuleType)
     case DesignSystem
+    case External(ExternalModuleType)
+    case Data
+    case DI
 }
 
 public enum ExternalModuleType: String {
-    case TCA // 임시
+    case Swinject
 }
 
 public enum FeatureModuleType: String {

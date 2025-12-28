@@ -18,6 +18,12 @@ extension ModuleType {
             "DesignSystem"
         case .Features(let featureModule):
             featureModule.rawValue
+        case .External(let externalModule):
+            externalModule.rawValue
+        case .Data:
+            "Data"
+        case .DI:
+            "DI"
         }
     }
     
