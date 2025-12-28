@@ -1,5 +1,0 @@
-#include "./Shared.xcconfig"
-
-BUNDLE_IDENTIFIER = com.jumy.tuist-template-qa
-BUNDLE_NAME = TuistTemplate-QA
-ENV = QA

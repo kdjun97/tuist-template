@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # 메뉴 옵션
-options=("FeatureModule" "CommonModule")
+options=("PresentationModule" "CommonModule")
 selected=0
 
 # 터미널 설정 저장

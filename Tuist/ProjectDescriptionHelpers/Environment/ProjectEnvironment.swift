@@ -14,23 +14,13 @@ public struct ProjectEnvironment: @unchecked Sendable {
     public let bundleIdentifier: String
     public let deploymentTargets: DeploymentTargets
     public let destination: Destinations
-    public let baseSetting: SettingsDictionary
-    public let defaultSettings: DefaultSettings
 }
 
 public let projectEnvironment = ProjectEnvironment(
     appName: "TuistTemplate",
     targetName: "TuistTemplate",
     organizationName: "jumy",
-    bundleIdentifier: "${BUNDLE_IDENTIFIER}",
+    bundleIdentifier: "com.jumy.tuisttemplate",
     deploymentTargets: .iOS("16.0"),
-    destination: .iOS,
-    baseSetting: [
-        "OTHER_LDFLAGS": ["$(inherited) -Objc"],
-        "DEBUG_INFORMATION_FORMAT": "dwarf-with-dsym",
-        "OTHER_SWIFT_FLAGS": ["$(inherited)", "-enable-actor-data-race-checks"]
-    ],
-    defaultSettings: DefaultSettings.recommended(excluding: [
-        "SWIFT_ACTIVE_COMPILATION_CONDITIONS"
-    ])
+    destination: .iOS
 )

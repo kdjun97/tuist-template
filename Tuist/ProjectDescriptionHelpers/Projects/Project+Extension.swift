@@ -34,11 +34,6 @@ public extension Project {
             options: .options(
                 automaticSchemesOptions: .disabled
             ),
-            settings: .settings(
-                base: projectEnvironment.baseSetting,
-                configurations: .default,
-                defaultSettings: projectEnvironment.defaultSettings
-            ),
             targets: targets,
             schemes: schemes,
             additionalFiles: additionalFiles ?? [],

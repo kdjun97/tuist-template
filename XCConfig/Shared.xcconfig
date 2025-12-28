@@ -1,6 +1,0 @@
-OTHER_SWIFT_FLAGS[config=DEV][sdk=*] = $(inherited) -DDEV
-OTHER_SWIFT_FLAGS[config=INT][sdk=*] = $(inherited) -DINT
-OTHER_SWIFT_FLAGS[config=QA][sdk=*] = $(inherited) -DQA
-OTHER_SWIFT_FLAGS[config=STAGE][sdk=*] = $(inherited) -DSTAGE
-OTHER_SWIFT_FLAGS[config=PROD][sdk=*] = $(inherited) -DPROD
-OTHER_SWIFT_FLAGS[config=RELEASE][sdk=*] = $(inherited) -DRELEASE

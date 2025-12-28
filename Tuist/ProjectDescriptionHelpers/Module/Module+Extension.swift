@@ -16,8 +16,8 @@ extension ModuleType {
             "Domain"
         case .DesignSystem:
             "DesignSystem"
-        case .Features(let featureModule):
-            featureModule.rawValue
+        case .Presentations(let presentationModule):
+            presentationModule.rawValue
         }
     }
     
@@ -27,7 +27,6 @@ extension ModuleType {
             [.target(moduleType: .App)]
         case .DesignSystem:
             [.target(moduleType: self), .designSystemDemo(moduleType: self)]
-        // TODO: Feature Module
         default:
             [.target(moduleType: self)]
         }
@@ -67,7 +66,7 @@ extension ModuleType {
     var schemes: [Scheme] {
         switch self {
         case .App:
-            .scheme(name: projectEnvironment.appName)
+            [.implements(targetName: projectEnvironment.appName)]
         case .DesignSystem:
             [.implements(targetName: "\(self.name)Demo")]
         default:

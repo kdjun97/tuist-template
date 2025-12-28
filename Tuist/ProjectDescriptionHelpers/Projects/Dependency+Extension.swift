@@ -23,10 +23,10 @@ public extension Array where Element == TargetDependency {
                     path: .relativeToRoot("Projects/\(module.name)")
                 )
 
-            case .Features(let feature):
+            case .Presentations(let presentation):
                 return .project(
-                    target: feature.rawValue,
-                    path: .relativeToRoot("Projects/Features/\(feature.rawValue)")
+                    target: presentation.rawValue,
+                    path: .relativeToRoot("Projects/Presentations/\(presentation.rawValue)")
                 )
             // TODO: Exteranl
             }

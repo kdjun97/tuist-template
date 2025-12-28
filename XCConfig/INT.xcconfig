@@ -1,5 +1,0 @@
-#include "./Shared.xcconfig"
-
-BUNDLE_IDENTIFIER = com.jumy.tuist-template-int
-BUNDLE_NAME = TuistTemplate-Int
-ENV = Int

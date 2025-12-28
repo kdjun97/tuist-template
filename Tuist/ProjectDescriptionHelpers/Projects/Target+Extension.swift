@@ -41,8 +41,6 @@ public extension Target {
                     "BUNDLE_IDENTIFIER": "\(projectEnvironment.bundleIdentifier)-demo",
                     "BUNDLE_NAME": "\(moduleType.name)Demo"
                 ],
-                configurations: .default,
-                defaultSettings: projectEnvironment.defaultSettings
             )
         )
     }
@@ -67,11 +65,6 @@ private extension Target {
             sources: ["Sources/**"],
             resources: resources,
             dependencies: dependencies,
-            settings: .settings(
-                base: projectEnvironment.baseSetting,
-                configurations: .default,
-                defaultSettings: projectEnvironment.defaultSettings
-            )
         )
     }
 }

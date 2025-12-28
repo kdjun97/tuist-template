@@ -8,14 +8,14 @@
 public enum ModuleType: Hashable {
     case App
     case Domain
-    case Features(FeatureModuleType)
+    case Presentations(PresentationModuleType)
     case DesignSystem
 }
 
 public enum ExternalModuleType: String {
-    case TCA // 임시
+    case TEMP
 }
 
-public enum FeatureModuleType: String {
+public enum PresentationModuleType: String {
     case Root
 }
