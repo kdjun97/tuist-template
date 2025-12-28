@@ -9,7 +9,6 @@ public enum ModuleType: Hashable {
     case App
     case Domain
     case Features(FeatureModuleType)
-    
     case DesignSystem
 }
 

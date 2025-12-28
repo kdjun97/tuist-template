@@ -13,7 +13,8 @@ public extension Project {
             name: moduleType.name,
             targets: moduleType.targets,
             schemes: moduleType.schemes,
-            additionalFiles: moduleType.additionalFiles
+            additionalFiles: moduleType.additionalFiles,
+            resourceSynthesizers: moduleType.resourceSynthesizers
         )
     }
 }
@@ -24,7 +25,8 @@ public extension Project {
         name: String,
         targets: [Target],
         schemes: [Scheme],
-        additionalFiles: [FileElement]? = nil
+        additionalFiles: [FileElement]? = nil,
+        resourceSynthesizers: [ResourceSynthesizer]
     ) -> Project {
         Project(
             name: name,
@@ -40,7 +42,7 @@ public extension Project {
             targets: targets,
             schemes: schemes,
             additionalFiles: additionalFiles ?? [],
-            resourceSynthesizers: [] // design System 에서 사용 예정
+            resourceSynthesizers: resourceSynthesizers
         )
     }
 }

@@ -72,7 +72,6 @@ extension ModuleType {
             [.implements(targetName: "\(self.name)Demo")]
         default:
             []
-//            .scheme(name: self.name)
         }
     }
     
@@ -82,6 +81,13 @@ extension ModuleType {
             ["../../XCConfig/Shared.xcconfig"]
         default:
             nil
+        }
+    }
+    
+    var resourceSynthesizers: [ResourceSynthesizer] {
+        switch self {
+        case .DesignSystem: [.assets()]
+        default: []
         }
     }
 }
