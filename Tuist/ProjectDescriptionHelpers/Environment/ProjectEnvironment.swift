@@ -24,7 +24,7 @@ public let projectEnvironment = ProjectEnvironment(
     organizationName: "jumy",
     bundleIdentifier: "${BUNDLE_IDENTIFIER}",
     deploymentTargets: .iOS("16.0"),
-    destination: .iOS,
+    destination: [.iPhone],
     baseSetting: [
         "OTHER_LDFLAGS": ["$(inherited) -Objc"],
         "DEBUG_INFORMATION_FORMAT": "dwarf-with-dsym",
