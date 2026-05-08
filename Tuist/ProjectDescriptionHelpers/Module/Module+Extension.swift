@@ -73,7 +73,7 @@ extension ModuleType {
     var schemes: [Scheme] {
         switch self {
         case .App:
-            .scheme(name: projectEnvironment.appName)
+            .scheme(name: projectEnvironment.appName, environments: .all)
         case .DesignSystem:
             [.implements(targetName: "\(self.name)Demo")]
         default:

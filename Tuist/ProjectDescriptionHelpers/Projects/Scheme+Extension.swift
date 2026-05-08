@@ -8,14 +8,10 @@
 import ProjectDescription
 
 extension Array where Element == Scheme {
-    static func scheme(name: String) -> [Scheme] {
-        let deployTargets: [ConfigurationType] = ConfigurationType.allCases
-        
-        return deployTargets.map {
-            return .implements(
-                targetName: name,
-                configurationType: $0
-            )
+    public static func scheme(name: String, environments: [Environment] = []) -> [Scheme] {
+        switch environments.isEmpty {
+        case true: [.implements(targetName: name, environment: nil)]
+        case false: environments.map { .implements(targetName: name, environment: $0) }
         }
     }
 }
@@ -23,32 +19,35 @@ extension Array where Element == Scheme {
 extension Scheme {
     static func implements(
         targetName: String,
-        configurationType: ConfigurationType? = nil
+        environment: Environment? = nil
     ) -> Scheme {
-        guard let configurationType else {
+        let configurationName: ConfigurationName = switch environment {
+        case .some(let environment): .init(stringLiteral: environment.name)
+        case nil: .init(stringLiteral: Environment.dev.name)
+        }
+        
+        guard let environment else {
             return .scheme(
                 name: targetName,
                 shared: true,
                 buildAction: .buildAction(targets: ["\(targetName)"]),
-                runAction: .runAction(configuration: ConfigurationType.dev.name)
+                runAction: .runAction(configuration: configurationName)
             )
         }
         
-        let schemeName = switch configurationType {
-        case .prod:
-            targetName
-        default:
-            "\(targetName)-\(configurationType.rawValue)"
+        let schemeName = switch environment {
+        case .prod: targetName
+        default: "\(targetName)-\(environment.name)"
         }
         
         return Scheme.scheme(
             name: schemeName,
             shared: true,
             buildAction: .buildAction(targets: ["\(targetName)"]),
-            runAction: .runAction(configuration: configurationType.name),
-            archiveAction: .archiveAction(configuration: configurationType.name),
-            profileAction: .profileAction(configuration: configurationType.name),
-            analyzeAction: .analyzeAction(configuration: configurationType.name)
+            runAction: .runAction(configuration: configurationName),
+            archiveAction: .archiveAction(configuration: configurationName),
+            profileAction: .profileAction(configuration: configurationName),
+            analyzeAction: .analyzeAction(configuration: configurationName)
         )
     }
 }
