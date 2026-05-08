@@ -15,10 +15,22 @@ public enum Module: Hashable {
     case DI
 }
 
-public enum ExternalModule: String {
+public enum ExternalModule {
     case Swinject
+    
+    var name: String {
+        switch self {
+        default: "\(self)"
+        }
+    }
 }
 
-public enum FeatureModule: String {
+public enum FeatureModule {
     case Root
+    
+    var name: String {
+        switch self {
+        default: "\(self)"
+        }
+    }
 }

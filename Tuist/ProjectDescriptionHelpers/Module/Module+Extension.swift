@@ -11,15 +11,15 @@ extension Module {
     var name: String {
         switch self {
         case .App: projectEnvironment.targetName
-        case .Features(let featureModule): featureModule.rawValue
-        case .External(let externalModule): externalModule.rawValue
+        case .Features(let featureModule): featureModule.name
+        case .External(let externalModule): externalModule.name
         default: "\(self)"
         }
     }
     
     var projectPath: String {
         switch self {
-        case .Features(let module): return "Projects/Features/\(module.rawValue)"
+        case .Features(let module): return "Projects/Features/\(module.name)"
         default: return "Projects/\(name)"
         }
     }
@@ -29,7 +29,7 @@ extension Module {
         case .App:
             [.target(moduleType: self)]
         case .DesignSystem:
-            [.target(moduleType: self), .designSystemDemo(moduleType: self)]
+            [.target(moduleType: self), .demo(moduleType: self)]
         // TODO: Feature Module
         default:
             [.target(moduleType: self)]
@@ -87,5 +87,19 @@ extension Module {
         case .DesignSystem: [.assets()]
         default: []
         }
+    }
+    
+    var bundleID: String {
+        if case .App = self { return "${BUNDLE_IDENTIFIER}" }
+        
+        let organizationName = projectEnvironment.organizationName
+        let appName = projectEnvironment.appName
+        
+        let moduleName = switch self {
+        case .Features(let module): module.name.lowercased()
+        default: name.lowercased()
+        }
+        
+        return "com.\(organizationName).\(appName).\(moduleName)"
     }
 }

@@ -24,11 +24,11 @@ public extension Array where Element == TargetDependency {
                 )
             case .Features(let feature):
                 return .project(
-                    target: feature.rawValue,
-                    path: .relativeToRoot("Projects/Features/\(feature.rawValue)")
+                    target: feature.name,
+                    path: .relativeToRoot("Projects/Features/\(feature.name)")
                 )
             case .External(let externalModule):
-                return .external(name: externalModule.rawValue)
+                return .external(name: externalModule.name)
             }
         }
     }

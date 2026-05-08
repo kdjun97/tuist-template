@@ -15,35 +15,24 @@ public extension Target {
         return Target.implements(
             name: moduleType.name,
             product: moduleType.product,
+            bundleID: moduleType.bundleID,
             resources: resources,
             infoPlist: infoPlist,
             dependencies: .dependencies(moduleType: moduleType)
         )
     }
     
-    static func designSystemDemo(moduleType: Module) -> Target {
-        return Target.target(
+    static func demo(moduleType: Module) -> Target {
+        return .target(
             name: "\(moduleType.name)Demo",
             destinations: projectEnvironment.destination,
             product: .app,
-            bundleId: "\(projectEnvironment.bundleIdentifier)-demo",
+            bundleId: "\(moduleType.bundleID).demo",
             deploymentTargets: projectEnvironment.deploymentTargets,
             infoPlist: .file(path: "Demo/Support/Info.plist"),
             sources: ["Demo/Sources/**"],
-            resources: ["Demo/Resources/**"],
-            dependencies: [.project(
-                target: Module.DesignSystem.name,
-                path: .relativeToRoot("Projects/\(Module.DesignSystem.name)")
-            )],
-            settings: .settings(
-                base: [
-                    "PRODUCT_NAME": "\(moduleType.name)Demo",
-                    "BUNDLE_IDENTIFIER": "\(projectEnvironment.bundleIdentifier)-demo",
-                    "BUNDLE_NAME": "\(moduleType.name)Demo"
-                ],
-                configurations: .default,
-                defaultSettings: projectEnvironment.defaultSettings
-            )
+            dependencies: [.target(.target(moduleType: moduleType))],
+            settings: .settings(configurations: .default)
         )
     }
 }
@@ -53,6 +42,7 @@ private extension Target {
     static func implements(
         name: String,
         product: Product,
+        bundleID: String,
         resources: ResourceFileElements? = nil,
         infoPlist: InfoPlist,
         dependencies: [TargetDependency]
@@ -61,7 +51,7 @@ private extension Target {
             name: name,
             destinations: projectEnvironment.destination,
             product: product,
-            bundleId: projectEnvironment.bundleIdentifier,
+            bundleId: bundleID,
             deploymentTargets: projectEnvironment.deploymentTargets,
             infoPlist: infoPlist,
             sources: ["Sources/**"],
