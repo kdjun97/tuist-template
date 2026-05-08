@@ -30,8 +30,50 @@ public extension Target {
             bundleId: "\(moduleType.bundleID).demo",
             deploymentTargets: projectEnvironment.deploymentTargets,
             infoPlist: .file(path: "Demo/Support/Info.plist"),
-            sources: ["Demo/Sources/**"],
-            dependencies: [.target(.target(moduleType: moduleType))],
+            sources: .demo,
+            dependencies: [.target(name: moduleType.name)],
+            settings: .settings(configurations: .default)
+        )
+    }
+    
+    static func interface(_ module: MicroFeatureModule) -> Target {
+        return .target(
+            name: module.interfaceName,
+            destinations: projectEnvironment.destination,
+            product: .staticLibrary,
+            bundleId: "\(module.bundleID).interface",
+            deploymentTargets: projectEnvironment.deploymentTargets,
+            infoPlist: .default,
+            sources: .interface,
+            dependencies: module.interfaceDependencies,
+            settings: .settings(configurations: .default)
+        )
+    }
+    
+    static func testing(_ module: MicroFeatureModule) -> Target {
+        return .target(
+            name: module.testingName,
+            destinations: projectEnvironment.destination,
+            product: .staticLibrary,
+            bundleId: "\(module.bundleID).testing",
+            deploymentTargets: projectEnvironment.deploymentTargets,
+            infoPlist: .default,
+            sources: .testing,
+            dependencies: module.testingDependencies,
+            settings: .settings(configurations: .default)
+        )
+    }
+    
+    static func tests(_ module: MicroFeatureModule) -> Target {
+        return .target(
+            name: module.testsName,
+            destinations: projectEnvironment.destination,
+            product: .unitTests,
+            bundleId: "\(module.bundleID).tests",
+            deploymentTargets: projectEnvironment.deploymentTargets,
+            infoPlist: .default,
+            sources: .tests,
+            dependencies: module.testDependencies,
             settings: .settings(configurations: .default)
         )
     }
@@ -54,7 +96,7 @@ private extension Target {
             bundleId: bundleID,
             deploymentTargets: projectEnvironment.deploymentTargets,
             infoPlist: infoPlist,
-            sources: ["Sources/**"],
+            sources: .default,
             resources: resources,
             dependencies: dependencies,
             settings: .settings(
@@ -64,4 +106,12 @@ private extension Target {
             )
         )
     }
+}
+
+extension SourceFilesList? {
+    static var `default`: SourceFilesList? { ["Sources/**"] }
+    static var demo: SourceFilesList? { ["Demo/Sources/**"] }
+    static var interface: SourceFilesList? { ["Interface/Sources/**"] }
+    static var testing: SourceFilesList? { ["Testing/Sources/**"] }
+    static var tests: SourceFilesList? { ["Tests/Sources/**"] }
 }

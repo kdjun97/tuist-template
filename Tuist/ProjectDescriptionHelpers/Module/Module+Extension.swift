@@ -13,26 +13,30 @@ extension Module {
         case .App: projectEnvironment.targetName
         case .Features(let featureModule): featureModule.name
         case .External(let externalModule): externalModule.name
+        case .MicroFeature(let microFeatureModule): microFeatureModule.name
         default: "\(self)"
         }
     }
     
-    var projectPath: String {
-        switch self {
-        case .Features(let module): return "Projects/Features/\(module.name)"
-        default: return "Projects/\(name)"
-        }
-    }
-    
-    var targets: [Target] {
+    func targets(hasDemo: Bool = false) -> [Target] {
         switch self {
         case .App:
-            [.target(moduleType: self)]
+            return [.target(moduleType: self)]
         case .DesignSystem:
-            [.target(moduleType: self), .demo(moduleType: self)]
-        // TODO: Feature Module
+            return [.target(moduleType: self), .demo(moduleType: self)]
+        case .MicroFeature(let module):
+            var targets: [Target] = hasDemo ? [.demo(moduleType: self)] : []
+            
+            targets.append(contentsOf: [
+                .target(moduleType: self),
+                .interface(module),
+                .testing(module),
+                .tests(module)
+            ])
+            
+            return targets
         default:
-            [.target(moduleType: self)]
+            return [.target(moduleType: self)]
         }
     }
     
@@ -64,12 +68,14 @@ extension Module {
         }
     }
     
-    var schemes: [Scheme] {
+    func schemes(hasDemo: Bool = false) -> [Scheme] {
         switch self {
         case .App:
             .scheme(name: projectEnvironment.appName, environments: .all)
         case .DesignSystem:
             [.implements(targetName: "\(self.name)Demo")]
+        case .MicroFeature(let module):
+            hasDemo ? [.implements(targetName: module.demoName)] : []
         default:
             []
         }
@@ -97,9 +103,18 @@ extension Module {
         
         let moduleName = switch self {
         case .Features(let module): module.name.lowercased()
+        case .MicroFeature(let module): module.name.lowercased()
         default: name.lowercased()
         }
         
         return "com.\(organizationName).\(appName).\(moduleName)"
+    }
+    
+    var path: Path {
+        switch self {
+        case .Features: .relativeToRoot("Projects/Features/\(name)")
+        case .MicroFeature(let module): .relativeToRoot(module.path)
+        default: .relativeToRoot("Projects/\(name)")
+        }
     }
 }
