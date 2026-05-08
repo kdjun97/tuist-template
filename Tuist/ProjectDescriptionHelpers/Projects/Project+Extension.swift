@@ -8,7 +8,7 @@
 import ProjectDescription
 
 public extension Project {
-    static func module(moduleType: ModuleType) -> Project {
+    static func module(moduleType: Module) -> Project {
         Project.implements(
             name: moduleType.name,
             targets: moduleType.targets,
@@ -31,9 +31,7 @@ public extension Project {
         Project(
             name: name,
             organizationName: projectEnvironment.organizationName,
-            options: .options(
-                automaticSchemesOptions: .disabled
-            ),
+            options: .options(automaticSchemesOptions: .disabled),
             settings: .settings(
                 base: projectEnvironment.baseSetting,
                 configurations: .default,

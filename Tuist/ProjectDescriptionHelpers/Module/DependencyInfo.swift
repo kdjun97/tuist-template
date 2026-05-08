@@ -6,7 +6,7 @@
 //
 
 public struct DependencyInfo: @unchecked Sendable {
-    let moduleDependencies: [ModuleType: [ModuleType]]
+    let moduleDependencies: [Module: [Module]]
 }
 
 public let dependencyInfo: DependencyInfo = DependencyInfo(

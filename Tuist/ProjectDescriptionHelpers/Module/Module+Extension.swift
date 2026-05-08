@@ -7,30 +7,27 @@
 
 import ProjectDescription
 
-extension ModuleType {
+extension Module {
     var name: String {
         switch self {
-        case .App:
-            projectEnvironment.targetName
-        case .Domain:
-            "Domain"
-        case .DesignSystem:
-            "DesignSystem"
-        case .Features(let featureModule):
-            featureModule.rawValue
-        case .External(let externalModule):
-            externalModule.rawValue
-        case .Data:
-            "Data"
-        case .DI:
-            "DI"
+        case .App: projectEnvironment.targetName
+        case .Features(let featureModule): featureModule.rawValue
+        case .External(let externalModule): externalModule.rawValue
+        default: "\(self)"
+        }
+    }
+    
+    var projectPath: String {
+        switch self {
+        case .Features(let module): return "Projects/Features/\(module.rawValue)"
+        default: return "Projects/\(name)"
         }
     }
     
     var targets: [Target] {
         switch self {
         case .App:
-            [.target(moduleType: .App)]
+            [.target(moduleType: self)]
         case .DesignSystem:
             [.target(moduleType: self), .designSystemDemo(moduleType: self)]
         // TODO: Feature Module
@@ -41,12 +38,9 @@ extension ModuleType {
     
     var product: Product {
         switch self {
-        case .App:
-            .app
-        case .DesignSystem:
-            .staticFramework
-        default:
-            .staticLibrary
+        case .App: .app
+        case .DesignSystem: .staticFramework
+        default: .staticLibrary
         }
     }
     
@@ -83,10 +77,8 @@ extension ModuleType {
     
     var additionalFiles: [FileElement]? {
         switch self {
-        case .App:
-            ["../../XCConfig/Shared.xcconfig"]
-        default:
-            nil
+        case .App: ["../../XCConfig/Shared.xcconfig"]
+        default: nil
         }
     }
     

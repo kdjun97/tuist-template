@@ -8,11 +8,11 @@
 import ProjectDescription
 
 public extension Array where Element == TargetDependency {
-    static func dependencies(moduleType: ModuleType) -> [TargetDependency] {
+    static func dependencies(moduleType: Module) -> [TargetDependency] {
         .implements(key: moduleType)
     }
     
-    private static func implements(key moduleType: ModuleType) -> [TargetDependency] {
+    private static func implements(key moduleType: Module) -> [TargetDependency] {
         guard let modules = dependencyInfo.moduleDependencies[moduleType] else { return [] }
         
         return modules.map { module in

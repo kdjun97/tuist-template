@@ -8,7 +8,7 @@
 import ProjectDescription
 
 public extension Target {
-    static func target(moduleType: ModuleType) -> Target {
+    static func target(moduleType: Module) -> Target {
         let resources: ResourceFileElements? = moduleType.hasResources ? ["Resources/**"] : nil
         let infoPlist: InfoPlist = moduleType.infoPlist
         
@@ -21,7 +21,7 @@ public extension Target {
         )
     }
     
-    static func designSystemDemo(moduleType: ModuleType) -> Target {
+    static func designSystemDemo(moduleType: Module) -> Target {
         return Target.target(
             name: "\(moduleType.name)Demo",
             destinations: projectEnvironment.destination,
@@ -32,8 +32,8 @@ public extension Target {
             sources: ["Demo/Sources/**"],
             resources: ["Demo/Resources/**"],
             dependencies: [.project(
-                target: ModuleType.DesignSystem.name,
-                path: .relativeToRoot("Projects/\(ModuleType.DesignSystem.name)")
+                target: Module.DesignSystem.name,
+                path: .relativeToRoot("Projects/\(Module.DesignSystem.name)")
             )],
             settings: .settings(
                 base: [
