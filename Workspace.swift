@@ -6,9 +6,10 @@
 //
 
 import ProjectDescription
+import ProjectDescriptionHelpers
 
 let workspace = Workspace(
-    name: "TuistTemplate",
+    name: projectEnvironment.appName,
     projects: [
         "Projects/App"
     ],
