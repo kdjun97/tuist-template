@@ -107,7 +107,7 @@ if [[ "$selected_option" == "MicroFeatureModule" ]]; then
     if ! grep -Eq "^[[:space:]]*case[[:space:]].*\\b$name\\b" "$module_file"; then
         tmp_file=$(mktemp)
         awk -v case_name="$name" '
-            /public enum MicroFeatureModule: Hashable \{/ && !inserted {
+            /public enum MicroFeatureModule/ && /\{/ && !inserted {
                 print
                 print "    case " case_name
                 inserted = 1
