@@ -31,7 +31,7 @@ public extension Target {
             deploymentTargets: projectEnvironment.deploymentTargets,
             infoPlist: .file(path: "Demo/Support/Info.plist"),
             sources: .demo,
-            dependencies: [.target(name: moduleType.name)],
+            dependencies: moduleType.demoDependencies,
             settings: .settings(configurations: .default)
         )
     }
@@ -114,4 +114,15 @@ extension SourceFilesList? {
     static var interface: SourceFilesList? { ["Interface/Sources/**"] }
     static var testing: SourceFilesList? { ["Testing/Sources/**"] }
     static var tests: SourceFilesList? { ["Tests/Sources/**"] }
+}
+
+private extension Module {
+    var demoDependencies: [TargetDependency] {
+        switch self {
+        case .MicroFeature(let module):
+            module.demoDependencies
+        default:
+            [.target(name: name)]
+        }
+    }
 }
