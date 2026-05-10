@@ -8,15 +8,15 @@
 import ProjectDescription
 
 private let moduleNameAttribute = Template.Attribute.required("name")
-private let layerAttribute = Template.Attribute.required("layer")
+private let basePathAttribute = Template.Attribute.required("basePath")
 private let hasDemoAttribute = Template.Attribute.optional("hasDemo", default: "false")
-private let path = "Projects/\(layerAttribute)/\(moduleNameAttribute)"
+private let path = "\(basePathAttribute)/\(moduleNameAttribute)"
 
 private let template = Template(
     description: "A template for micro features module.",
     attributes: [
         moduleNameAttribute,
-        layerAttribute,
+        basePathAttribute,
         hasDemoAttribute
     ],
     items: [

@@ -112,6 +112,7 @@ extension Module {
     
     var path: Path {
         switch self {
+        case .Domain: .relativeToRoot("Projects/Domain/Domain")
         case .Features: .relativeToRoot("Projects/Features/\(name)")
         case .MicroFeature(let module): .relativeToRoot(module.path)
         default: .relativeToRoot("Projects/\(name)")

@@ -63,9 +63,19 @@ fi
 
 has_demo="false"
 layer=""
+base_path="Projects"
+if [[ "$selected_option" == "CommonModule" || "$selected_option" == "MicroFeatureModule" ]]; then
+    layer_options=("Root" "Feature" "Domain" "Core" "Shared")
+    layer=$(select_with_arrows "📂 모듈 layer를 선택하세요 (↑↓ 방향키로 선택, Enter로 확정):" "${layer_options[@]}")
+    
+    if [[ "$layer" == "Root" ]]; then
+        base_path="Projects"
+    else
+        base_path="Projects/$layer"
+    fi
+fi
+
 if [[ "$selected_option" == "MicroFeatureModule" ]]; then
-    layer_options=("Features" "Domain" "Data")
-    layer=$(select_with_arrows "📂 MicroFeature layer를 선택하세요 (↑↓ 방향키로 선택, Enter로 확정):" "${layer_options[@]}")
     
     while true; do
         read -p "🧪 Demo target도 생성할까요? (y/n): " answer
@@ -88,8 +98,10 @@ fi
 # scaffold 실행
 echo "📁 [Tuist] ( $selected_option ) 모듈 '( $name )' 생성 중..."
 
-if [[ "$selected_option" == "MicroFeatureModule" ]]; then
-    scaffold_args=("$selected_option" "--name" "$name" "--layer" "$layer" "--has-demo" "$has_demo")
+if [[ "$selected_option" == "CommonModule" ]]; then
+    scaffold_args=("$selected_option" "--name" "$name" "--base-path" "$base_path")
+elif [[ "$selected_option" == "MicroFeatureModule" ]]; then
+    scaffold_args=("$selected_option" "--name" "$name" "--base-path" "$base_path" "--has-demo" "$has_demo")
 else
     scaffold_args=("$selected_option" "--name" "$name")
 fi
@@ -102,7 +114,7 @@ fi
 
 if [[ "$selected_option" == "MicroFeatureModule" ]]; then
     module_file="Tuist/ProjectDescriptionHelpers/Module/Module.swift"
-    module_path="Projects/$layer/$name"
+    module_path="$base_path/$name"
     
     if ! grep -Eq "^[[:space:]]*case[[:space:]].*\\b$name\\b" "$module_file"; then
         tmp_file=$(mktemp)
