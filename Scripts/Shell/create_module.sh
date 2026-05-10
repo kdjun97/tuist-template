@@ -6,6 +6,16 @@ options=("FeatureModule" "CommonModule" "MicroFeatureModule")
 # 터미널 설정 저장
 stty_orig=$(stty -g)
 
+if command -v tuist >/dev/null 2>&1; then
+    tuist_command=(tuist)
+elif command -v mise >/dev/null 2>&1; then
+    tuist_command=(mise exec -- tuist)
+else
+    echo "❌ tuist 또는 mise를 찾을 수 없습니다."
+    stty "$stty_orig"
+    exit 1
+fi
+
 # 방향키 기반 선택 메뉴 함수
 select_with_arrows() {
     local prompt="$1"
@@ -106,16 +116,52 @@ else
     scaffold_args=("$selected_option" "--name" "$name")
 fi
 
-if ! tuist scaffold "${scaffold_args[@]}"; then
+if ! "${tuist_command[@]}" scaffold "${scaffold_args[@]}"; then
 	echo "❌ 템플릿 \"$selected_option\"이 없거나 문제가 발생했습니다."
     stty "$stty_orig"
 	exit 1
 fi
 
-if [[ "$selected_option" == "MicroFeatureModule" ]]; then
-    module_file="Tuist/ProjectDescriptionHelpers/Module/Module.swift"
-    module_path="$base_path/$name"
+module_file="Tuist/ProjectDescriptionHelpers/Module/Module.swift"
+module_extension_file="Tuist/ProjectDescriptionHelpers/Module/Module+Extension.swift"
+module_path="$base_path/$name"
+
+if [[ "$selected_option" == "CommonModule" ]]; then
+    if ! grep -Eq "^[[:space:]]*case[[:space:]].*\\b$name\\b" "$module_file"; then
+        tmp_file=$(mktemp)
+        awk -v case_name="$name" '
+            /public enum Module/ && /\{/ && !inserted {
+                print
+                print "    case " case_name
+                inserted = 1
+                next
+            }
+            { print }
+        ' "$module_file" > "$tmp_file" && mv "$tmp_file" "$module_file"
+        echo "✅ Module enum에 case $name 추가 완료"
+    fi
     
+    if [[ "$base_path" != "Projects" ]] && ! grep -Fq "case .$name:" "$module_extension_file"; then
+        tmp_file=$(mktemp)
+        awk -v case_name="$name" -v module_path="$module_path" '
+            /^[[:space:]]*var path: Path \{/ {
+                print
+                in_path = 1
+                next
+            }
+            in_path && /^[[:space:]]*default:/ && !inserted {
+                print "        case ." case_name ": .relativeToRoot(\"" module_path "\")"
+                inserted = 1
+                print
+                next
+            }
+            { print }
+        ' "$module_extension_file" > "$tmp_file" && mv "$tmp_file" "$module_extension_file"
+        echo "✅ Module path에 $module_path 추가 완료"
+    fi
+fi
+
+if [[ "$selected_option" == "MicroFeatureModule" ]]; then
     if ! grep -Eq "^[[:space:]]*case[[:space:]].*\\b$name\\b" "$module_file"; then
         tmp_file=$(mktemp)
         awk -v case_name="$name" '
